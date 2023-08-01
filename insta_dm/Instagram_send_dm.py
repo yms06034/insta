@@ -37,6 +37,7 @@ def find_linktext(lt , browser):
 INPUT_ID = '//*[@id="loginForm"]/div/div[1]/div/label/input'
 INPUT_PW = '//*[@id="loginForm"]/div/div[2]/div/label/input'
 
+ALERT = '/html/body/div[2]/div/div/div[3]/div/div/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[3]/button[2]'
 ALERT_2 = '/html/body/div[2]/div/div/div[3]/div/div/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[3]/button[2]'
 
 # INSTA LOGOUT XPATH
@@ -53,6 +54,7 @@ START_CK = '/html/body/div[2]/div/div/div[3]/div/div/div[1]/div/div[2]/div/div/d
 IMAGE_BTN = '/html/body/div[2]/div/div/div[2]/div/div/div/div[1]/div[1]/div[2]/section/div/div/div/div[1]/div/div[2]/div/div/div/div/div/div[2]/div/div/div[2]/div/div/div[4]/div[2]'
 
 SEND_BTN = '/html/body/div[2]/div/div/div[2]/div/div/div/div[1]/div[1]/div[2]/section/div/div/div/div[1]/div/div[2]/div/div/div/div/div/div[2]/div/div/div[2]/div/div[2]/div[3]'
+SEND_BTN2 = '/html/body/div[2]/div/div/div[2]/div/div/div/div[1]/div[1]/div[2]/section/div/div/div/div[1]/div/div[2]/div/div/div/div/div/div[2]/div/div/div[2]/div/div/div[3]'
 
 # EXCEPTION XPATH:
 CLOSE_BTN = '/html/body/div[2]/div/div/div[3]/div/div/div[1]/div/div[2]/div/div/div/div/div/div/div[1]/div/div[1]/div[2]/div/div/div'
@@ -114,7 +116,10 @@ def insta_login(INPUT_ID, INPUT_PW, insta_id, insta_pw, browser):
         pass
 
     browser.implicitly_wait(10)
-    find_className('_ac8f', browser).click()
+    try:
+        find_className('_ac8f', browser).click()
+    except NoSuchElementException:
+        find_xpath(ALERT, browser).click()
     try:
         browser.implicitly_wait(10)
         find_xpath(ALERT_2, browser).click()
@@ -133,25 +138,21 @@ def insta_logout(browser, MORE_BTN):
 def send_dm(browser, MESSAGE_BTN, RECIPIENT_INPUT, FIND_ID_CLICK_BTN, START_CK, IMAGE_BTN, SEND_BTN, dm_id, image_path, message_content):
     browser.get('https://www.instagram.com/direct/inbox/')
 
-    time.sleep(2)
-
+    browser.implicitly_wait(5)
     message_btn = find_xpath(MESSAGE_BTN, browser)
     message_btn.click()
 
-    time.sleep(1)
-
+    browser.implicitly_wait(5)
     recipient_input = find_xpath(RECIPIENT_INPUT, browser)
 
     pyperclip.copy(dm_id)
     recipient_input.send_keys(Keys.CONTROL, 'v')
 
-    time.sleep(1.5)
-
+    browser.implicitly_wait(5)
     find_id_click_btn = find_xpath(FIND_ID_CLICK_BTN, browser)
     find_id_click_btn.click()
 
-    time.sleep(1.5)
-
+    browser.implicitly_wait(5)
     start_ck = find_xpath(START_CK, browser)
     start_ck.click()
 
@@ -187,10 +188,13 @@ def send_dm(browser, MESSAGE_BTN, RECIPIENT_INPUT, FIND_ID_CLICK_BTN, START_CK, 
             pyperclip.copy(message_content)
             input_area.send_keys(Keys.CONTROL, 'v')
 
-            time.sleep(1)
-
-            send_btn = find_xpath(SEND_BTN, browser)
-            send_btn.click()
+            try:
+                browser.implicitly_wait(10)
+                send_btn = find_xpath(SEND_BTN, browser)
+                send_btn.click()
+            except NoSuchElementException:
+                send_btn = find_xpath(SEND_BTN2, browser)
+                send_btn.click()
         
     elif last_message[-5] == 'Enter':
         if last_message[-4] == '보낸 메시지':
@@ -215,10 +219,13 @@ def send_dm(browser, MESSAGE_BTN, RECIPIENT_INPUT, FIND_ID_CLICK_BTN, START_CK, 
                 pyperclip.copy(message_content)
                 input_area.send_keys(Keys.CONTROL, 'v')
 
-                time.sleep(1)
-
-                send_btn = find_xpath(SEND_BTN, browser)
-                send_btn.click()
+                try:
+                    browser.implicitly_wait(10)
+                    send_btn = find_xpath(SEND_BTN, browser)
+                    send_btn.click()
+                except NoSuchElementException:
+                    send_btn = find_xpath(SEND_BTN2, browser)
+                    send_btn.click()
 
 
 def start_dm(num_per_user, insta_id_list, dm_id_list, timesleep, image_path, message_content):
