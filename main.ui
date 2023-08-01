@@ -117,7 +117,7 @@
        </rect>
       </property>
       <property name="text">
-       <string>계정 당 발송 수</string>
+       <string>계정당 발송 수</string>
       </property>
      </widget>
      <widget class="QListWidget" name="seding_ids">

@@ -290,7 +290,7 @@ class Ui_MainWindow(object):
         self.btn_add_2.setText(_translate("MainWindow", "추가"))
         self.btn_del_sending_id.setText(_translate("MainWindow", "제거"))
         self.label_9.setText(_translate("MainWindow", "비밀번호"))
-        self.label_26.setText(_translate("MainWindow", "계정 당 발송 수"))
+        self.label_26.setText(_translate("MainWindow", "계정당 발송 수"))
         self.label_23.setText(_translate("MainWindow", "발송 딜레이"))
         self.btn_clear_sending_ids.setText(_translate("MainWindow", "전체제거"))
         self.label_25.setText(_translate("MainWindow", "작성원고"))

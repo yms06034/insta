@@ -59,20 +59,20 @@ CLOSE_BTN = '/html/body/div[2]/div/div/div[3]/div/div/div[1]/div/div[2]/div/div/
 
 
 
-insta_id_list = [['sjk5838', 'mirae_beauty_09', 'mirae_inner_09'], ['rlatjdwls00@K', 'han828988@', 'han8289988@']]
+# insta_id_list = [['sjk5838', 'mirae_beauty_09', 'mirae_inner_09'], ['rlatjdwls00@K', 'han828988@', 'han8289988@']]
 
-dm_id_list = ['sjk5838', 'sjk5838', 'sjk5838', 'sjk5838', 'sjk5838']
-message_content = """하이루"""
+# dm_id_list = ['sjk5838', 'sjk5838', 'sjk5838', 'sjk5838', 'sjk5838']
+# message_content = """하이루"""
 
-image_path = 'C:\\Users\\user\\Downloads\\3.jpg'
+# image_path = 'C:\\Users\\user\\Downloads\\3.jpg'
 
-num_per_user = 1
-timesleep = 5
+# num_per_user = 1
+# timesleep = 5
 
 
-numbers = 3
+# numbers = 3
 
-count = 0
+# count = 0
 
 def open_browser():
     options = webdriver.ChromeOptions()
@@ -107,19 +107,21 @@ def insta_login(INPUT_ID, INPUT_PW, insta_id, insta_pw, browser):
     input_pw.send_keys("\n")
 
     try:
-        if find_id('slfErrorAlert', browser).text == '잘못된 비밀번호입니다. 다시 확인하세요.':
+        if find_id('slfErrorAlert', browser).text:
             print('로그인 실패')
+            return 0
     except:
         pass
 
-    time.sleep(1)
-    alert_1 = find_className('_ac8f', browser).click()
-    time.sleep(1)
+    browser.implicitly_wait(10)
+    find_className('_ac8f', browser).click()
     try:
-        time.sleep(1)
-        alert_2 = find_xpath(ALERT_2, browser).click()
+        browser.implicitly_wait(10)
+        find_xpath(ALERT_2, browser).click()
     except:
         pass
+
+    return 1
 
 def insta_logout(browser, MORE_BTN):
     find_xpath(MORE_BTN, browser).click()
@@ -183,7 +185,7 @@ def send_dm(browser, dm_id, image_path, message_content):
 
 
 
-def start_dm(num_per_user, insta_id_list, dm_id_list, timesleep):
+def start_dm(num_per_user, insta_id_list, dm_id_list, timesleep, image_path):
     url_count = 0
     browser = open_browser()
     duplicate_id = []
